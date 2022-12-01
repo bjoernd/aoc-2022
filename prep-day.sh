@@ -45,9 +45,9 @@ if test -e "src/day$1.rs"; then
 else
   echo "Creating boilerplate module for day $1 at src/day$1.rs..."
   echo "Remember to update main.rs:"
-  echo "  - Add 'mod day$1;'"
-  echo "  - Add 'use day$1::Day$1;'"
-  echo "  - Update 'get_day_solution' to use 'Day$1'"
+  echo "  mod day$1;"
+  echo "  use day$1::Day$1;"
+  echo "  $1 => Box::new(Day$1::from_lines(lines)),"
 
   cat <<-EOF > "src/day$1.rs"
 use crate::{DaySolution, FromInput};
