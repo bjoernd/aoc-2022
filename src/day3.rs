@@ -1,4 +1,4 @@
-use std::{vec};
+use std::vec;
 
 use crate::{DaySolution, FromInput};
 
@@ -6,23 +6,31 @@ use crate::{DaySolution, FromInput};
 
 #[derive(Clone)]
 struct Compartments {
-    first : vec::Vec<u8>,
-    second : vec::Vec<u8>
+    first: vec::Vec<u8>,
+    second: vec::Vec<u8>,
 }
 
 pub struct Day3 {
-    rucksacks : vec::Vec<Compartments>
+    rucksacks: vec::Vec<Compartments>,
 }
 
 impl Compartments {
-    fn from_string(s : &str) -> Compartments {
-        let pivot = s.len()/2;
-        Compartments{ first : s[0..pivot].as_bytes().to_vec(),
-                      second: s[pivot..s.len()].as_bytes().to_vec() } 
+    fn from_string(s: &str) -> Compartments {
+        let pivot = s.len() / 2;
+        Compartments {
+            first: s[0..pivot].as_bytes().to_vec(),
+            second: s[pivot..s.len()].as_bytes().to_vec(),
+        }
     }
 
     fn find_overlapping(&self) -> u8 {
-        **self.first.iter().filter(|&x| self.second.contains(x)).collect::<Vec<_>>().first().unwrap()
+        **self
+            .first
+            .iter()
+            .filter(|&x| self.second.contains(x))
+            .collect::<Vec<_>>()
+            .first()
+            .unwrap()
     }
 
     /*
@@ -40,11 +48,11 @@ impl Compartments {
         r
     }
 
-    fn score(c : &u8) -> u8 {
+    fn score(c: &u8) -> u8 {
         match c {
-            b'a'..=b'z' => *c-b'a'+1,
-            b'A'..=b'Z' => *c-b'A'+27,
-            _ => panic!("Unexpected character {}", c)
+            b'a'..=b'z' => *c - b'a' + 1,
+            b'A'..=b'Z' => *c - b'A' + 27,
+            _ => panic!("Unexpected character {}", c),
         }
     }
 }
@@ -63,9 +71,9 @@ impl Day3 {
         let group_count = self.rucksacks.len() / 3;
         let mut score = 0;
         for n in 0..group_count {
-            let r1 = self.rucksacks[3*n].all();
-            let r2 = self.rucksacks[3*n+1].all();
-            let r3 = self.rucksacks[3*n+2].all();
+            let r1 = self.rucksacks[3 * n].all();
+            let r2 = self.rucksacks[3 * n + 1].all();
+            let r3 = self.rucksacks[3 * n + 2].all();
 
             for c in r1 {
                 if r2.contains(&c) && r3.contains(&c) {
@@ -81,7 +89,9 @@ impl Day3 {
 
 impl FromInput for Day3 {
     fn from_lines(lines: impl Iterator<Item = String>) -> Self {
-        let mut rucksack = Day3{ rucksacks: Vec::new() };
+        let mut rucksack = Day3 {
+            rucksacks: Vec::new(),
+        };
         for l in lines {
             rucksack.rucksacks.push(Compartments::from_string(&l));
         }
