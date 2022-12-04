@@ -42,32 +42,28 @@ impl FromInput for Day4 {
     }
 }
 
-impl DaySolution for Day4 {
-    fn part_one(&self) -> String {
-        let max = self.ranges.len() / 2;
+macro_rules! solver {
+    ($obj:expr, $detector:expr) => {{
+        let max = $obj.ranges.len() / 2;
         let mut count = 0;
         for i in 0..max {
-            let r1 = &self.ranges[i * 2];
-            let r2 = &self.ranges[i * 2 + 1];
+            let r1 = &$obj.ranges[i * 2];
+            let r2 = &$obj.ranges[i * 2 + 1];
 
-            if r1.contains(&r2) || r2.contains(&r1) {
+            if $detector(r1, r2) || $detector(r2, r1) {
                 count += 1;
             }
         }
         count.to_string()
+    }};
+}
+
+impl DaySolution for Day4 {
+    fn part_one(&self) -> String {
+        solver!(self, Range::contains)
     }
 
     fn part_two(&self) -> String {
-        let max = self.ranges.len() / 2;
-        let mut count = 0;
-        for i in 0..max {
-            let r1 = &self.ranges[i * 2];
-            let r2 = &self.ranges[i * 2 + 1];
-
-            if r1.overlaps(r2) || r2.overlaps(r1) {
-                count += 1;
-            }
-        }
-        count.to_string()
+        solver!(self, Range::overlaps)
     }
 }
