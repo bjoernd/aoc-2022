@@ -96,7 +96,7 @@ impl FromInput for Day5 {
 }
 
 impl Day5 {
-    fn top_row(columns :&Vec<Vec<char>>) -> String {
+    fn top_row(columns: &Vec<Vec<char>>) -> String {
         let mut res = String::from("");
 
         for col in columns {
@@ -113,8 +113,8 @@ impl DaySolution for Day5 {
 
         for m in &cp.moves {
             for _ in 0..m.count {
-                let ch = cp.columns[m.src-1].pop().unwrap();
-                cp.columns[m.dest-1].push(ch);
+                let ch = cp.columns[m.src - 1].pop().unwrap();
+                cp.columns[m.dest - 1].push(ch);
             }
         }
         //cp.print();
@@ -128,11 +128,11 @@ impl DaySolution for Day5 {
             let mut tmp = Vec::<char>::new();
 
             for _ in 0..m.count {
-                tmp.push(cp.columns[m.src-1].pop().unwrap());
+                tmp.push(cp.columns[m.src - 1].pop().unwrap());
             }
             tmp.reverse();
             for c in tmp {
-                cp.columns[m.dest-1].push(c);
+                cp.columns[m.dest - 1].push(c);
             }
         }
         //cp.print();
