@@ -1,5 +1,5 @@
 use crate::{DaySolution, FromInput};
-use std::{collections::HashSet};
+use std::collections::HashSet;
 
 // TODO: Model the problem into this struct
 pub struct Day6 {
