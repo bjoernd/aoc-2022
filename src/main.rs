@@ -15,11 +15,11 @@ trait DaySolution {
 }
 
 /// Reads the input for a day from the `.input` directory.
-fn load_input(day: usize) -> impl Iterator<Item = String> {
+fn load_input(in_file: &String) -> impl Iterator<Item = String> {
     let file = std::fs::OpenOptions::new()
         .read(true)
-        .open(format!(".input/{day}.txt"))
-        .expect("Failed to access data for day");
+        .open(in_file)
+        .expect("Failed to access data in in_file");
     let buffered_file = BufReader::new(file);
 
     buffered_file
@@ -51,7 +51,15 @@ fn main() {
         .parse::<usize>()
         .expect("Provided day wasn't a valid integer");
 
-    let input = load_input(day);
+    let in_file = match env::args().nth(2) {
+        None => {
+            format!(".input/{day}.txt")
+        }
+        Some(s) => s,
+    };
+
+    println!("{in_file}");
+    let input = load_input(&in_file);
     let solution = get_day_solution(day, input);
     println!("Solving day {day}...");
 
