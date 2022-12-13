@@ -11,13 +11,13 @@ enum FileObject {
 
 #[derive(Clone)]
 struct FileNode {
-    name: String,
+    /*name: String,*/
     size: usize,
 }
 
 #[derive(Clone)]
 struct DirNode {
-    name: String,
+    /*name: String,*/
     entries: Vec<FileObject>,
 }
 
@@ -30,7 +30,7 @@ impl Day7 {}
 impl FromInput for Day7 {
     fn from_lines(lines: impl Iterator<Item = String>) -> Self {
         let root = Rc::new(RefCell::new(DirNode {
-            name: String::from("/"),
+            /*name: String::from("/"),*/
             entries: vec![],
         }));
         let mut cwd = root.clone();
@@ -52,7 +52,7 @@ impl FromInput for Day7 {
                         /* we already covered root node */
                     } else {
                         let new_dir = DirNode {
-                            name: String::from(target),
+                            /*name: String::from(target),*/
                             entries: vec![],
                         };
                         let rf = Rc::new(RefCell::new(new_dir));
@@ -69,9 +69,9 @@ impl FromInput for Day7 {
                 if first == "dir" {
                     continue;
                 } else {
-                    let fname = items.next().unwrap();
+                    let _fname = items.next().unwrap();
                     let fnode = FileNode {
-                        name: String::from(fname),
+                        /*name: String::from(fname),*/
                         size: usize::from_str_radix(first, 10).unwrap(),
                     };
                     //println!("Adding file {}", fnode.name);
