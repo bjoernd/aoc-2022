@@ -7,6 +7,7 @@ enum Operations {
     SQUARE,
 }
 
+/*
 impl Operations {
     fn to_string(&self) -> &str {
         match self {
@@ -16,6 +17,7 @@ impl Operations {
         }
     }
 }
+*/
 
 #[derive(Clone, Copy)]
 struct Operation {
@@ -24,9 +26,11 @@ struct Operation {
 }
 
 impl Operation {
+    /*
     fn to_string(&self) -> String {
         format!("{} {}", &self.op.to_string(), &self.param)
     }
+    */
 
     fn apply(&self, src: usize) -> usize {
         match self.op {
@@ -47,6 +51,7 @@ struct Monkey {
     inspected: usize,
 }
 
+/*
 impl Monkey {
     fn print(&self) {
         print!("Monkey [");
@@ -62,6 +67,7 @@ impl Monkey {
         );
     }
 }
+*/
 
 // TODO: Model the problem into this struct
 pub struct Day11 {
