@@ -35,19 +35,11 @@ impl Operation {
             Operations::SQUARE => src * src,
         }
     }
-
-    fn apply64(&self, src: i64) -> i64 {
-        match self.op {
-            Operations::ADD => src + self.param as i64,
-            Operations::MULTIPLY => src * self.param as i64,
-            Operations::SQUARE => src * src as i64,
-        }
-    }
 }
 
 #[derive(Clone)]
 struct Monkey {
-    items: Vec<i64>,
+    items: Vec<usize>,
     op: Operation,
     test: usize,
     test_true: usize,
@@ -115,7 +107,7 @@ impl FromInput for Day11 {
                 let mut item = data.nth(2);
                 while item.is_some() {
                     items.push(
-                        i64::from_str_radix(item.unwrap().replace(",", "").as_str(), 10).unwrap(),
+                        usize::from_str_radix(item.unwrap().replace(",", "").as_str(), 10).unwrap(),
                     );
                     item = data.next();
                 }
@@ -179,14 +171,14 @@ impl DaySolution for Day11 {
 
                     //println!(" Monkey inspects an item with a worry level of {i}");
 
-                    i = monkeys_[monkey_idx].op.apply64(i);
+                    i = monkeys_[monkey_idx].op.apply(i);
                     //println!("  Worry level increases to {i}");
                     i /= 3;
                     //println!("  Monkey gets bored with item. Worry level is divided by 3 to {i}.");
 
                     monkeys_[monkey_idx].inspected += 1;
 
-                    let target = if i % monkeys_[monkey_idx].test as i64 == 0 {
+                    let target = if i % monkeys_[monkey_idx].test == 0 {
                         //println!("  Current worry level IS divisible by {}", monkeys_[monkey_idx].test);
                         monkeys_[monkey_idx].test_true
                     } else {
@@ -223,7 +215,20 @@ impl DaySolution for Day11 {
     fn part_two(&self) -> String {
         let mut monkeys_ = self.monkeys.clone();
 
-        for _ in 0..20 {
+        /* "You'll need to find another way to keep your worry levels manageable."
+         * -> We're not really interested in the item (worry) levels, but only in the modulo operations.
+         * -> https://en.wikipedia.org/wiki/Chinese_remainder_theorem tells us that if we have prime numbers n1,n2,...
+         *    and know a % n1, b % n2, ... then we can compute the value of X % N with N=n1*n2*...
+         * -> So we'll keep our numbers smaller and the modulos equivalent to their bigger counterparts by staying in
+         *    the room 0..N
+         * -> No, I did not find this out myself ;)
+         */
+        let mut modul = 1;
+        for m in &monkeys_ {
+            modul *= m.test;
+        }
+
+        for _ in 0..10000 {
             for monkey_idx in 0..monkeys_.len() {
                 //println!("Monkey {monkey_idx}:");
 
@@ -232,14 +237,14 @@ impl DaySolution for Day11 {
 
                     //println!(" Monkey inspects an item with a worry level of {i}");
 
-                    i = monkeys_[monkey_idx].op.apply64(i);
+                    i = monkeys_[monkey_idx].op.apply(i);
                     //println!("  Worry level increases to {i}");
-                    i /= 3;
+                    i %= modul;
                     //println!("  Monkey gets bored with item. Worry level is divided by 3 to {i}.");
 
                     monkeys_[monkey_idx].inspected += 1;
 
-                    let target = if i % monkeys_[monkey_idx].test as i64 == 0 {
+                    let target = if i % monkeys_[monkey_idx].test as usize == 0 {
                         //println!("  Current worry level IS divisible by {}", monkeys_[monkey_idx].test);
                         monkeys_[monkey_idx].test_true
                     } else {
